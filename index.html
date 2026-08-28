@@ -1245,12 +1245,31 @@
                                     <span class="project-tag">Linux</span>
                                     <span class="project-tag">Binary Protocol</span>
                                 </div>
-                                <p class="project-context">Building a real-time auction system from scratch in pure C — no frameworks, no libraries beyond POSIX — forced me to confront every low-level concurrency pitfall head-on: race conditions, deadlocks, network byte-order mismatches, and partial TCP reads. This is the kind of system that powers real-world trading floors and live bidding platforms where even milliseconds of lag or a single race condition can mean lost transactions. The hardest part was designing the inactivity detection and heartbeat system that reliably evicts dead clients without false positives.</p>
+                                <p class="project-context">Building a real-time auction system from scratch in pure C —
+                                    no frameworks, no libraries beyond POSIX — forced me to confront every low-level
+                                    concurrency pitfall head-on: race conditions, deadlocks, network byte-order
+                                    mismatches, and partial TCP reads. This is the kind of system that powers real-world
+                                    trading floors and live bidding platforms where even milliseconds of lag or a single
+                                    race condition can mean lost transactions. The hardest part was designing the
+                                    inactivity detection and heartbeat system that reliably evicts dead clients without
+                                    false positives.</p>
                                 <ul class="project-desc">
-                                    <li>Architected a server handling <strong>6 concurrent clients</strong> with <strong>5 pthreads</strong> (admin, timer, inactivity monitor, client handlers) synchronized via <strong>pthread mutexes</strong>, <strong>condition variables</strong>, and <strong>C11 _Atomic</strong> for lock-free global state.</li>
-                                    <li>Designed a <strong>3-byte packed TLV binary protocol</strong> with <strong>6 message types</strong> using <code>htons</code>/<code>ntohs</code> network byte-order serialization and <code>MSG_WAITALL</code> for reliable TCP stream framing.</li>
-                                    <li>Implemented <strong>sequence-number-guarded</strong> inactivity countdown (<strong>7s</strong> idle → <strong>3-step</strong> sale finalization) and <strong>PING/PONG heartbeat</strong> (<strong>3s</strong> interval, <strong>10s</strong> timeout) for dead-client eviction.</li>
-                                    <li>Added <strong>SIGPIPE/SIGINT</strong> signal handling for crash-safe shutdown, path-traversal-safe input sanitization, and embedded-style macro logging with <code>__func__</code> introspection.</li>
+                                    <li>Architected a server handling <strong>6 concurrent clients</strong> with
+                                        <strong>5 pthreads</strong> (admin, timer, inactivity monitor, client handlers)
+                                        synchronized via <strong>pthread mutexes</strong>, <strong>condition
+                                            variables</strong>, and <strong>C11 _Atomic</strong> for lock-free global
+                                        state.</li>
+                                    <li>Designed a <strong>3-byte packed TLV binary protocol</strong> with <strong>6
+                                            message types</strong> using <code>htons</code>/<code>ntohs</code> network
+                                        byte-order serialization and <code>MSG_WAITALL</code> for reliable TCP stream
+                                        framing.</li>
+                                    <li>Implemented <strong>sequence-number-guarded</strong> inactivity countdown
+                                        (<strong>7s</strong> idle → <strong>3-step</strong> sale finalization) and
+                                        <strong>PING/PONG heartbeat</strong> (<strong>3s</strong> interval,
+                                        <strong>10s</strong> timeout) for dead-client eviction.</li>
+                                    <li>Added <strong>SIGPIPE/SIGINT</strong> signal handling for crash-safe shutdown,
+                                        path-traversal-safe input sanitization, and embedded-style macro logging with
+                                        <code>__func__</code> introspection.</li>
                                 </ul>
                             </div>
                             <div class="project-item">
@@ -1273,12 +1292,31 @@
                                     <span class="project-tag">GenAI</span>
                                     <span class="project-tag">RAG</span>
                                 </div>
-                                <p class="project-context">Retail demand forecasting is a billion-dollar problem — Walmart, Amazon, and every grocery chain wrestles with it daily. Overstocking wastes inventory; understocking loses sales. I tackled this with a 3.4 million-row dataset spanning 54 stores and 33 product families, dealing with messy real-world data: missing values, holiday effects, oil price correlations, and earthquake disruptions. The challenge wasn't just building models — it was making them explainable to non-technical stakeholders through an interactive dashboard anyone could query in plain English.</p>
+                                <p class="project-context">Retail demand forecasting is a billion-dollar problem —
+                                    Walmart, Amazon, and every grocery chain wrestles with it daily. Overstocking wastes
+                                    inventory; understocking loses sales. I tackled this with a 3.4 million-row dataset
+                                    spanning 54 stores and 33 product families, dealing with messy real-world data:
+                                    missing values, holiday effects, oil price correlations, and earthquake disruptions.
+                                    The challenge wasn't just building models — it was making them explainable to
+                                    non-technical stakeholders through an interactive dashboard anyone could query in
+                                    plain English.</p>
                                 <ul class="project-desc">
-                                    <li>Cleaned, preprocessed, and performed <strong>exploratory data analysis</strong> on a <strong>3.4M-row</strong> retail dataset (54 stores × 33 product families) — handled missing values, outlier detection, and uncovered seasonal trends that guided feature engineering.</li>
-                                    <li>Benchmarked ARIMA, SARIMA, Prophet, and LightGBM via <strong>walk-forward cross-validation</strong>, building predictive models that cut <strong>SMAPE from 17.8% to 10.1%</strong>; used <strong>SHAP</strong> to explain per-anomaly demand drivers at the row level.</li>
-                                    <li>Built and <strong>deployed a 6-tab Streamlit dashboard</strong> for store-level demand forecasting, model comparison, and anomaly diagnostics; created interactive data visualizations to communicate insights to cross-functional stakeholders.</li>
-                                    <li>Shipped a GenAI analyst tab with <strong>LLM function-calling</strong> (5 grounded tools) and a <strong>TF-IDF RAG pipeline</strong> over domain context, enabling natural-language queries over forecasts, anomalies, and model metrics.</li>
+                                    <li>Cleaned, preprocessed, and performed <strong>exploratory data analysis</strong>
+                                        on a <strong>3.4M-row</strong> retail dataset (54 stores × 33 product families)
+                                        — handled missing values, outlier detection, and uncovered seasonal trends that
+                                        guided feature engineering.</li>
+                                    <li>Benchmarked ARIMA, SARIMA, Prophet, and LightGBM via <strong>walk-forward
+                                            cross-validation</strong>, building predictive models that cut <strong>SMAPE
+                                            from 17.8% to 10.1%</strong>; used <strong>SHAP</strong> to explain
+                                        per-anomaly demand drivers at the row level.</li>
+                                    <li>Built and <strong>deployed a 6-tab Streamlit dashboard</strong> for store-level
+                                        demand forecasting, model comparison, and anomaly diagnostics; created
+                                        interactive data visualizations to communicate insights to cross-functional
+                                        stakeholders.</li>
+                                    <li>Shipped a GenAI analyst tab with <strong>LLM function-calling</strong> (5
+                                        grounded tools) and a <strong>TF-IDF RAG pipeline</strong> over domain context,
+                                        enabling natural-language queries over forecasts, anomalies, and model metrics.
+                                    </li>
                                 </ul>
                             </div>
                             <div class="project-item">
@@ -1295,11 +1333,27 @@
                                     <span class="project-tag">Deep Learning</span>
                                     <span class="project-tag">k-d Trees</span>
                                 </div>
-                                <p class="project-context">Modern communication systems (5G, IoT, satellite links) need to transmit meaning, not just bits. The sDAC framework from IEEE Trans. Communications tackles this by learning a semantic encoder that works with any modulation scheme — but the original paper's brute-force codebook lookup was a bottleneck. I extended their work by replacing it with a k-d tree search, turning an O(M) operation into O(log M), which is the difference between "works in a lab" and "deployable in real-time systems." The hardest part was understanding how stop-gradient training lets you backpropagate through discrete quantization — a concept at the bleeding edge of deep learning theory.</p>
+                                <p class="project-context">Modern communication systems (5G, IoT, satellite links) need
+                                    to transmit meaning, not just bits. The sDAC framework from IEEE Trans.
+                                    Communications tackles this by learning a semantic encoder that works with any
+                                    modulation scheme — but the original paper's brute-force codebook lookup was a
+                                    bottleneck. I extended their work by replacing it with a k-d tree search, turning an
+                                    O(M) operation into O(log M), which is the difference between "works in a lab" and
+                                    "deployable in real-time systems." The hardest part was understanding how
+                                    stop-gradient training lets you backpropagate through discrete quantization — a
+                                    concept at the bleeding edge of deep learning theory.</p>
                                 <ul class="project-desc">
-                                    <li>Reproduced and extended the <strong>sDAC framework</strong> (IEEE Trans. Commun., vol. 73, Nov. 2025), a DNN-based semantic encoder bridging deep learning compression with real-world digital communication infrastructure.</li>
-                                    <li>Proposed and implemented a <strong>k-d tree nearest-neighbor search</strong> for codebook lookup <strong>(O(log M) per query)</strong>, achieving <strong>16×–256× speedup</strong> over brute-force at q = 4 to 8 bits/symbol.</li>
-                                    <li>Analyzed how a <strong>Binary Symmetric Channel (BSC) abstraction</strong> and stop-gradient training enable end-to-end optimization despite discrete quantization, allowing modulation-agnostic deployment across <strong>BPSK, QPSK, and 16-QAM</strong> without retraining.</li>
+                                    <li>Reproduced and extended the <strong>sDAC framework</strong> (IEEE Trans.
+                                        Commun., vol. 73, Nov. 2025), a DNN-based semantic encoder bridging deep
+                                        learning compression with real-world digital communication infrastructure.</li>
+                                    <li>Proposed and implemented a <strong>k-d tree nearest-neighbor search</strong> for
+                                        codebook lookup <strong>(O(log M) per query)</strong>, achieving
+                                        <strong>16×–256× speedup</strong> over brute-force at q = 4 to 8 bits/symbol.
+                                    </li>
+                                    <li>Analyzed how a <strong>Binary Symmetric Channel (BSC) abstraction</strong> and
+                                        stop-gradient training enable end-to-end optimization despite discrete
+                                        quantization, allowing modulation-agnostic deployment across <strong>BPSK, QPSK,
+                                            and 16-QAM</strong> without retraining.</li>
                                 </ul>
                             </div>
                             <div class="project-item">
@@ -1317,11 +1371,28 @@
                                     <span class="project-tag">Git</span>
                                     <span class="project-tag">pgAdmin</span>
                                 </div>
-                                <p class="project-context">Every brokerage — from Zerodha to Robinhood — runs on a database that must atomically execute trades, update holdings, settle balances, and log audits without ever losing a rupee. I designed StockVault to simulate exactly this: a production-grade database where a single missing constraint or poorly-ordered trigger could corrupt the entire ledger. The challenge was enforcing BCNF normalization across 14 interrelated tables while keeping queries fast enough for real-time portfolio dashboards — which I solved with 19 targeted indexes validated through EXPLAIN ANALYZE benchmarks at 1M-row scale.</p>
+                                <p class="project-context">Every brokerage — from Zerodha to Robinhood — runs on a
+                                    database that must atomically execute trades, update holdings, settle balances, and
+                                    log audits without ever losing a rupee. I designed StockVault to simulate exactly
+                                    this: a production-grade database where a single missing constraint or
+                                    poorly-ordered trigger could corrupt the entire ledger. The challenge was enforcing
+                                    BCNF normalization across 14 interrelated tables while keeping queries fast enough
+                                    for real-time portfolio dashboards — which I solved with 19 targeted indexes
+                                    validated through EXPLAIN ANALYZE benchmarks at 1M-row scale.</p>
                                 <ul class="project-desc">
-                                    <li>Designed a <strong>BCNF-normalized PostgreSQL database (14 tables, 7 views, 30 queries)</strong> with <strong>ISA supertype–subtype hierarchies</strong>, check constraints, and partial indexes; authored formal BCNF proofs for all relations.</li>
-                                    <li>Engineered <strong>9 PL/pgSQL triggers</strong> automating the full trade lifecycle — order validation, <strong>weighted-average holdings upsert</strong>, balance settlement, and audit logging; optimized reads with <strong>19 targeted indexes</strong> achieving up to <strong>900× speedup at 1M-row scale</strong>, validated via <code>EXPLAIN ANALYZE</code>.</li>
-                                    <li>Built a <strong>7-module SQL test suite</strong> with an <strong>automated bash runner</strong>; maintained version-controlled documentation including BCNF proofs, ER diagrams, and performance analysis — owning the full lifecycle from schema design through testing.</li>
+                                    <li>Designed a <strong>BCNF-normalized PostgreSQL database (14 tables, 7 views, 30
+                                            queries)</strong> with <strong>ISA supertype–subtype hierarchies</strong>,
+                                        check constraints, and partial indexes; authored formal BCNF proofs for all
+                                        relations.</li>
+                                    <li>Engineered <strong>9 PL/pgSQL triggers</strong> automating the full trade
+                                        lifecycle — order validation, <strong>weighted-average holdings upsert</strong>,
+                                        balance settlement, and audit logging; optimized reads with <strong>19 targeted
+                                            indexes</strong> achieving up to <strong>900× speedup at 1M-row
+                                            scale</strong>, validated via <code>EXPLAIN ANALYZE</code>.</li>
+                                    <li>Built a <strong>7-module SQL test suite</strong> with an <strong>automated bash
+                                            runner</strong>; maintained version-controlled documentation including BCNF
+                                        proofs, ER diagrams, and performance analysis — owning the full lifecycle from
+                                        schema design through testing.</li>
                                 </ul>
                             </div>
                         </div>
