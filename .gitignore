@@ -10,7 +10,7 @@ desktop.ini
 # Agents
 .agents/
 
-# LaTeX build files
+# LaTeX & Coursework source files
 *.aux
 *.log
 *.out
@@ -19,7 +19,21 @@ desktop.ini
 *.fls
 *.bbl
 *.blg
+*.tex
 
-# Screenshots
+# Coursework, archives & reports
+CN_Project_final*
+FinalReport*
+*.zip
+*.pdf
+*.gif
+Screenshot*
+implementation_plan.md
+
+# Deployments & temp
+.vercel
+.vercelignore
+
+# Image filtering (allow all images inside images/)
 *.png
-!images/*.png
+!images/**

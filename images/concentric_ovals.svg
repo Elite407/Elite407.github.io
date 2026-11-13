@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1200" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="glow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.05)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0)" />
+    </linearGradient>
+  </defs>
+  <g stroke="rgba(218, 217, 216, 0.15)" stroke-width="1.5" fill="none">
+    <ellipse cx="400" cy="600" rx="50" ry="80" />
+    <ellipse cx="400" cy="600" rx="100" ry="160" />
+    <ellipse cx="400" cy="600" rx="150" ry="240" />
+    <ellipse cx="400" cy="600" rx="200" ry="320" />
+    <ellipse cx="400" cy="600" rx="250" ry="400" />
+    <ellipse cx="400" cy="600" rx="300" ry="480" />
+    <ellipse cx="400" cy="600" rx="350" ry="560" />
+    <ellipse cx="400" cy="600" rx="400" ry="640" />
+    <ellipse cx="400" cy="600" rx="450" ry="720" />
+    <ellipse cx="400" cy="600" rx="500" ry="800" />
+    <ellipse cx="400" cy="600" rx="550" ry="880" />
+    <ellipse cx="400" cy="600" rx="600" ry="960" />
+  </g>
+</svg>
