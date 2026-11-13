@@ -395,47 +395,102 @@
         W = cv.clientWidth; H = cv.clientHeight;
         cv.width = W * dpr; cv.height = H * dpr;
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const n = Math.round(Math.min(70, (W * H) / 18000));
-        parts = Array.from({ length: n }, () => spawn(true));
+        const n = Math.round(Math.min(80, Math.max(35, (W * H) / 16000)));
+        parts = Array.from({ length: n }, () => spawn());
         gx = W * .72; gy = H * .45;
     }
-    function spawn(initial) {
+    function spawn() {
         return {
             x: Math.random() * W,
-            y: initial ? Math.random() * H : H + 10,
-            r: Math.random() * 2.2 + .4,
-            vy: -(Math.random() * .6 + .2),
-            vx: (Math.random() - .5) * .2,
-            a: Math.random() * .6 + .2,
+            y: Math.random() * H,
+            r: Math.random() * 1.6 + 1.2,
+            vx: (Math.random() - .5) * .5,
+            vy: (Math.random() - .5) * .5,
+            a: Math.random() * .4 + .45,
             c: COLORS[(Math.random() * COLORS.length) | 0],
-            ph: Math.random() * Math.PI * 2,
         };
     }
-    function draw(t) {
+    function draw() {
         if (heroVisible) {
             ctx.clearRect(0, 0, W, H);
-            // central cursed core glow eases toward the mouse (compositor-only transform)
+
+            // central cursed core glow eases toward the mouse
             const tx = mouse.x > 0 ? mouse.x : W * .72, ty = mouse.y > 0 ? mouse.y : H * .45;
             gx += (tx - gx) * .08; gy += (ty - gy) * .08;
             glow.style.transform = `translate3d(${gx}px, ${gy}px, 0)`;
 
-            ctx.globalCompositeOperation = 'lighter';
+            // Update positions & bounce softly off borders
             for (let i = 0; i < parts.length; i++) {
                 const p = parts[i];
-                p.ph += .02;
-                p.x += p.vx + Math.sin(p.ph) * .3;
+                p.x += p.vx;
                 p.y += p.vy;
-                const dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
-                if (d2 < 22000) { // cursed energy reacts — swirls around cursor
-                    const d = Math.sqrt(d2) || 1;
-                    p.x += (dx / d) * 1.4 - (dy / d) * 1.2;
-                    p.y += (dy / d) * 1.4 + (dx / d) * 1.2;
+
+                if (p.x < 0) { p.x = 0; p.vx *= -1; }
+                else if (p.x > W) { p.x = W; p.vx *= -1; }
+                if (p.y < 0) { p.y = 0; p.vy *= -1; }
+                else if (p.y > H) { p.y = H; p.vy *= -1; }
+            }
+
+            ctx.globalCompositeOperation = 'lighter';
+
+            // 1. Constellation network: connect nearby dots
+            const LINK_DIST = 125;
+            const LINK_DIST_SQ = LINK_DIST * LINK_DIST;
+            for (let i = 0; i < parts.length; i++) {
+                const p1 = parts[i];
+                for (let j = i + 1; j < parts.length; j++) {
+                    const p2 = parts[j];
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const d2 = dx * dx + dy * dy;
+                    if (d2 < LINK_DIST_SQ) {
+                        const dist = Math.sqrt(d2);
+                        const alpha = (1 - dist / LINK_DIST) * 0.22;
+                        ctx.strokeStyle = `rgba(168, 85, 247, ${alpha})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.stroke();
+                    }
                 }
-                if (p.y < -10 || p.x < -20 || p.x > W + 20) parts[i] = spawn(false);
+            }
+
+            // 2. Cursor hover: connect lines to the nearest dots (no repulsion)
+            if (mouse.x > 0 && mouse.y > 0) {
+                const MOUSE_DIST = 160;
+                const MOUSE_DIST_SQ = MOUSE_DIST * MOUSE_DIST;
+                for (let i = 0; i < parts.length; i++) {
+                    const p = parts[i];
+                    const dx = p.x - mouse.x;
+                    const dy = p.y - mouse.y;
+                    const d2 = dx * dx + dy * dy;
+                    if (d2 < MOUSE_DIST_SQ) {
+                        const dist = Math.sqrt(d2);
+                        const alpha = (1 - dist / MOUSE_DIST) * 0.5;
+                        ctx.strokeStyle = `rgba(192, 132, 252, ${alpha})`;
+                        ctx.lineWidth = 1.1;
+                        ctx.beginPath();
+                        ctx.moveTo(mouse.x, mouse.y);
+                        ctx.lineTo(p.x, p.y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            // 3. Draw particles (glow + crisp core dot)
+            for (let i = 0; i < parts.length; i++) {
+                const p = parts[i];
                 const s = p.r * 7;
                 ctx.globalAlpha = p.a;
                 ctx.drawImage(sprites[p.c], p.x - s / 2, p.y - s / 2, s, s);
+
+                ctx.fillStyle = `rgba(${p.c}, ${p.a})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
             }
+
             ctx.globalAlpha = 1;
             ctx.globalCompositeOperation = 'source-over';
         }
@@ -449,6 +504,7 @@
             mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
         });
         $('#hero').addEventListener('mouseleave', () => { mouse.x = mouse.y = -999; });
+        document.addEventListener('mouseleave', () => { mouse.x = mouse.y = -999; });
         new IntersectionObserver(([en]) => { heroVisible = en.isIntersecting; }).observe($('#hero'));
         requestAnimationFrame(draw);
     }
