@@ -203,6 +203,28 @@
             </div>
         </article>`).join('');
 
+    /* ---------------- THEME (dark / light) ---------------- */
+    const savedTheme = localStorage.getItem('theme');
+    let isLight = savedTheme === 'light' || (!savedTheme && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches);
+
+    function applyTheme() {
+        body.classList.toggle('theme-light', isLight);
+        document.documentElement.classList.toggle('theme-light', isLight);
+        const metaTheme = $('meta[name="theme-color"]');
+        if (metaTheme) metaTheme.setAttribute('content', isLight ? '#f7f5f0' : '#121019');
+        const themeText = $('#themeText');
+        if (themeText) themeText.textContent = isLight ? 'Light' : 'Dark';
+    }
+
+    const themeToggleBtn = $('#themeToggle');
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            isLight = !isLight;
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            applyTheme();
+        });
+    }
+
     /* ---------------- MODE (sorcerer / plain) ---------------- */
     let plain = localStorage.getItem('mode') === 'plain';
     function applyMode() {
@@ -431,7 +453,7 @@
                 else if (p.y > H) { p.y = H; p.vy *= -1; }
             }
 
-            ctx.globalCompositeOperation = 'lighter';
+            ctx.globalCompositeOperation = isLight ? 'source-over' : 'lighter';
 
             // 1. Constellation network: connect nearby dots
             const LINK_DIST = 125;
@@ -445,8 +467,8 @@
                     const d2 = dx * dx + dy * dy;
                     if (d2 < LINK_DIST_SQ) {
                         const dist = Math.sqrt(d2);
-                        const alpha = (1 - dist / LINK_DIST) * 0.22;
-                        ctx.strokeStyle = `rgba(168, 85, 247, ${alpha})`;
+                        const alpha = (1 - dist / LINK_DIST) * (isLight ? 0.35 : 0.22);
+                        ctx.strokeStyle = isLight ? `rgba(124, 58, 237, ${alpha})` : `rgba(168, 85, 247, ${alpha})`;
                         ctx.lineWidth = 0.8;
                         ctx.beginPath();
                         ctx.moveTo(p1.x, p1.y);
@@ -467,8 +489,8 @@
                     const d2 = dx * dx + dy * dy;
                     if (d2 < MOUSE_DIST_SQ) {
                         const dist = Math.sqrt(d2);
-                        const alpha = (1 - dist / MOUSE_DIST) * 0.5;
-                        ctx.strokeStyle = `rgba(192, 132, 252, ${alpha})`;
+                        const alpha = (1 - dist / MOUSE_DIST) * (isLight ? 0.6 : 0.5);
+                        ctx.strokeStyle = isLight ? `rgba(217, 20, 56, ${alpha})` : `rgba(192, 132, 252, ${alpha})`;
                         ctx.lineWidth = 1.1;
                         ctx.beginPath();
                         ctx.moveTo(mouse.x, mouse.y);
@@ -482,10 +504,10 @@
             for (let i = 0; i < parts.length; i++) {
                 const p = parts[i];
                 const s = p.r * 7;
-                ctx.globalAlpha = p.a;
+                ctx.globalAlpha = isLight ? p.a * 0.75 : p.a;
                 ctx.drawImage(sprites[p.c], p.x - s / 2, p.y - s / 2, s, s);
 
-                ctx.fillStyle = `rgba(${p.c}, ${p.a})`;
+                ctx.fillStyle = `rgba(${p.c}, ${isLight ? 0.95 : p.a})`;
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
                 ctx.fill();
@@ -610,5 +632,6 @@
         .catch(() => { /* keep static fallback */ });
 
     /* ---------------- INIT ---------------- */
+    applyTheme();
     applyMode();
 })();

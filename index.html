@@ -6,7 +6,15 @@
     <title>Pranamya Sanghvi | Domain Expansion: Infinite Computation</title>
     <meta name="description" content="Portfolio of Pranamya Sanghvi — B.Tech ICT @ DA-IICT with a Minor in Computational Science. Data Science, AI/ML, databases and systems.">
     <meta name="author" content="Pranamya Sanghvi">
-    <meta name="theme-color" content="#07060a">
+    <meta name="theme-color" content="#121019">
+    <script>
+        (function() {
+            var t = localStorage.getItem('theme');
+            if (t === 'light' || (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+                document.documentElement.classList.add('theme-light');
+            }
+        })();
+    </script>
 
     <meta property="og:title" content="Pranamya Sanghvi — Portfolio">
     <meta property="og:description" content="Data Science · AI/ML · Systems. Enter the domain.">
@@ -67,6 +75,15 @@
         <a href="#vow"><span class="n">06</span><span data-t="Binding Vow" data-p="Contact">Binding Vow</span></a>
     </nav>
     <div class="nav-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle light / dark mode" title="Toggle theme">
+            <span class="tt-icon sun" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+            </span>
+            <span class="tt-icon moon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+            </span>
+            <span class="tt-text mono" id="themeText">Dark</span>
+        </button>
         <button class="mode-toggle" id="modeToggle" aria-label="Toggle sorcerer / plain mode">
             <span class="mt-opt mt-sorcerer">呪 Sorcerer</span>
             <span class="mt-opt mt-plain">Plain</span>
