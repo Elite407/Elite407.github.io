@@ -26,6 +26,7 @@ CN_Project_final*
 FinalReport*
 *.zip
 *.pdf
+!Pranamya_Sanghvi_Resume.pdf
 *.gif
 Screenshot*
 implementation_plan.md

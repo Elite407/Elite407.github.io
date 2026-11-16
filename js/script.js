@@ -11,74 +11,74 @@
     const body = document.body;
 
     /* ---------------- DATA ---------------- */
-    // lvl: 3 = Special Grade / Expert, 2 = Grade 1 / Advanced, 1 = Grade 2 / Intermediate
+    // lvl: 3 = Expert, 2 = Advanced, 1 = Intermediate
     const LVL = {
-        3: { w: '94%', t: 'Special Grade', p: 'Expert' },
-        2: { w: '74%', t: 'Grade 1', p: 'Advanced' },
-        1: { w: '52%', t: 'Grade 2', p: 'Intermediate' },
+        3: { w: '94%', t: 'Expert' },
+        2: { w: '74%', t: 'Advanced' },
+        1: { w: '52%', t: 'Intermediate' },
     };
-    const NUM = ['壱', '弐', '参', '肆', '伍', '陸', '漆', '捌'];
 
     const TECHNIQUES = [
         {
-            style: 'Water Breathing', jp: '水の呼吸', kanji: '水', color: 'var(--azure)',
-            title: 'Languages', plain: 'Languages',
+            jp: '言語', kanji: '語', color: 'var(--azure)',
+            title: 'Languages',
             forms: [['Python', 3], ['SQL', 3], ['Java', 2], ['C++', 2], ['C', 1]],
+            chips: ['MATLAB'],
         },
         {
-            style: 'Wind Breathing', jp: '風の呼吸', kanji: '風', color: 'var(--wind)',
-            title: 'Data Science', plain: 'Data Science',
+            jp: 'データ分析', kanji: '析', color: 'var(--wind)',
+            title: 'Data Science',
             forms: [['Pandas', 3], ['NumPy', 3], ['Scikit-learn', 2], ['Matplotlib', 2], ['Seaborn', 2]],
             chips: ['SciPy', 'SHAP', 'Jupyter'],
         },
         {
-            style: 'Flame Breathing', jp: '炎の呼吸', kanji: '炎', color: 'var(--flame)',
-            title: 'AI / ML', plain: 'AI / ML',
+            jp: '機械学習', kanji: '学', color: 'var(--flame)',
+            title: 'AI / ML',
             forms: [['PyTorch', 2], ['LightGBM', 2], ['TensorFlow', 2], ['Keras', 2]],
             chips: ['RAG', 'GenAI', 'LLM function-calling'],
         },
         {
-            style: 'Thunder Breathing', jp: '雷の呼吸', kanji: '雷', color: 'var(--gold)',
-            title: 'Developer Tools', plain: 'Developer Tools',
+            jp: '開発環境', kanji: '具', color: 'var(--gold)',
+            title: 'Developer Tools',
             forms: [['Git', 3], ['PostgreSQL', 2], ['Streamlit', 2]],
-            chips: ['Spring Boot', 'Docker', 'GitHub Actions', 'JUnit · JaCoCo', 'GitHub', 'VS Code', 'Linux Shell', 'pgAdmin', 'POSIX threads', 'POSIX sockets'],
+            chips: ['Spring Boot', 'Hibernate · JPQL', 'Caffeine', 'k6', 'JWT · OAuth2', 'REST · Swagger', 'Maven', 'Postman', 'Docker', 'GitHub Actions', 'JUnit · JaCoCo', 'Linux Shell', 'pgAdmin', 'POSIX threads', 'POSIX sockets'],
         },
         {
-            style: 'Moon Breathing', jp: '月の呼吸', kanji: '月', color: 'var(--moon)',
-            title: 'Coursework', plain: 'Coursework',
-            chips: ['Probability & Statistics', 'Design & Analysis of Algorithms', 'DBMS', 'Linear Algebra', 'Operating Systems'],
+            jp: '履修', kanji: '修', color: 'var(--moon)',
+            title: 'Coursework',
+            chips: ['Probability & Statistics', 'Design & Analysis of Algorithms', 'DBMS', 'Operating Systems', 'Object Oriented Programming', 'Linear Algebra'],
         },
         {
-            style: 'Total Concentration', jp: '全集中', kanji: '集', color: 'var(--crimson)',
-            title: 'Competitive Programming', plain: 'Problem Solving',
-            forms: [['Codeforces · 1370', 2], ['LeetCode · 1718', 2]],
+            jp: '問題解決', kanji: '競', color: 'var(--crimson)',
+            title: 'Problem Solving',
+            forms: [['Codeforces · 1376', 2], ['LeetCode · 1719', 2]],
             chips: ['DSA', 'Greedy', 'Graphs', 'DP'],
         },
     ];
 
     const DOMAINS = [
         {
-            kanji: '白紙学府', domain: 'Blank Slate Academy', color: 'var(--wind)',
-            title: 'MySlate', real: 'Personal e-learning platform · Spring Boot 3 · React 19 · PostgreSQL',
-            role: 'My additions: a 541-test suite, a feature-flag system, and architecture specs for exams and an AI tutor',
-            metric: ['13% → 94%', 'backend test coverage'],
-            tags: ['Java', 'Spring Boot', 'JUnit · Mockito', 'JaCoCo', 'React', 'PostgreSQL', 'Docker'],
+            kanji: '白紙学府', color: 'var(--wind)',
+            title: 'MySlate', real: 'Full-stack e-learning platform · Java 21 · Spring Boot · React · PostgreSQL',
+            metric: ['7.7s → 118ms', 'catalog p95 under load'],
+            tags: ['Java 21', 'Spring Boot', 'Hibernate · JPQL', 'PostgreSQL (Neon)', 'Caffeine', 'k6', 'React', 'JWT · OAuth2', 'JUnit · Mockito', 'Docker', 'GitHub Actions'],
             links: [],
-            note: 'Private repository. Code walkthrough available on request.',
-            metrics: [['94%', 'instruction coverage (from 13%)'], ['90%', 'branch coverage (from 7%)'], ['541', 'test cases (from 37)'], ['100%', 'coverage across 13 controllers'], ['6', 'feature specs written']],
-            story: 'MySlate is my personal evolution of our team\'s role-based learning platform: students, instructors and admins, with course catalog, enrollment, lecture progress, reviews, bookmarks, streaks, JWT authentication with OTP and Google sign-in, and an admin approval workflow. I started from that shared codebase and took it in my own direction. First I made it trustworthy, with a real test suite and a way to keep unfinished UI out of production. Then I designed the next layer of features: a hierarchical curriculum, proctored exams, and a retrieval-grounded AI tutor.',
+            note: 'Private repository for now. Code walkthrough available on request.',
+            metrics: [['118 ms', 'catalog p95, from 7.7 s'], ['65×', 'latency improvement'], ['3 → 290', 'req/s throughput'], ['51', 'REST endpoints over 9 tables'], ['566', 'tests · 94% instruction']],
+            story: 'MySlate is a full-stack learning platform I built end to end: a 51-endpoint Spring Boot REST API over Neon PostgreSQL with student, instructor and admin roles, course catalog and moderation, enrollment, lecture progress, reviews, bookmarks and streaks, JWT authentication with OTP and Google sign-in, an admin approval workflow, and a React frontend shipped through Docker and GitHub Actions. The part I learned the most from was not building features but making it fast. Under k6 load the course catalog took 6–13 seconds to respond, and the interesting work was finding out why — then proving the fix with numbers rather than assuming it worked.',
             points: [
-                'Raised backend coverage from <b>13% to 94%</b> (branch 7% → 90%, line 14% → 96%) by growing the suite from <b>3 to 33 test classes and 541 cases</b> with JUnit 5, Mockito and MockMvc. Every one of the 13 controllers is covered, services sit at 97%, and the before/after JaCoCo reports are documented.',
-                'Added a <b>feature-flag mechanism</b> for UI that has no backend yet. Mock-data screens are tagged <b>@preview-only</b> with the missing endpoint, shown in local dev and hidden in production builds, so one grep lists everything left to wire up.',
-                '<b>Designed (not built yet): hierarchical curriculum.</b> Course → Module → Section → Lesson with drag-and-drop ordering, video, material, quiz and assignment lessons, a draft/review/publish lifecycle and searchable transcripts.',
-                '<b>Designed (not built yet): assessments and proctored exams.</b> A central question bank (single and multi-select, true/false, numerical, descriptive), timed fullscreen exams with tab-switch and window-blur telemetry, and a manual grading queue.',
-                '<b>Designed (not built yet): RAG teaching assistant.</b> Transcript chunking (500 tokens, 50 overlap), <b>pgvector</b> with HNSW cosine search, a Gemini-backed answer, and clickable timestamp citations that seek the video player to the exact moment.',
-                'Wrote the supporting documentation: database architecture, functional and non-functional requirements, epics, user stories, and landing-page prototypes.',
-                'Carried over the <b>CI/CD pipelines</b> I built earlier: path-filtered CI with a Postgres service container, and a CD workflow that publishes containers to GHCR.',
+                '<b>Diagnosed a 5N+1 query pattern</b> as the cause of 6–13 s catalog latency under k6 load. Each catalog request was fanning out into five additional queries per course against a remote database, so the cost was dominated by round trips rather than by the queries themselves.',
+                'Fixed it with <b>3 batched JPQL queries</b> plus a <b>Caffeine cache</b> with explicit invalidation and stampede protection. The cache deliberately holds only role-agnostic data — <b>per-user access control stays out of the shared cache</b>, so one user\'s permissions can never be served to another.',
+                'Result: catalog <b>p95 fell from 7.7 s to 118 ms (65×)</b> and throughput rose from <b>3 to 290 req/s</b>. At 100 concurrent virtual users, k6 p95 went from <b>13 s to 6.5 ms</b>. Measured with the same k6 scripts before and after, on the same remote Neon instance.',
+                'Built the backend test suite to <b>566 tests across 33 test classes</b> with JUnit 5, Mockito and MockMvc — <b>94% instruction and 88% branch coverage</b>, all 13 controllers covered, services at 97%, with before/after JaCoCo reports committed. Coverage is the side effect; the point was being able to change the query layer above without breaking behaviour.',
+                'Set up the delivery pipeline: <b>path-filtered CI</b> with a Postgres service container so only affected modules rebuild, and a <b>CD workflow publishing containers to GHCR</b>.',
+                'Added a <b>feature-flag mechanism</b> for UI that has no backend yet. Mock-data screens are tagged <b>@preview-only</b> with the missing endpoint, shown in local dev and hidden in production builds, so a single grep lists everything left to wire up.',
+                'Wrote the supporting documentation: database architecture, functional and non-functional requirements, epics, user stories and landing-page prototypes.',
+                '<b>Designed, not yet built:</b> a hierarchical curriculum (Course → Module → Section → Lesson with a draft/review/publish lifecycle), a question bank with timed proctored exams and tab-switch telemetry, and a RAG teaching assistant (500-token transcript chunks with 50 overlap, <b>pgvector</b> HNSW cosine search, Gemini-backed answers, and timestamp citations that seek the video player to the exact moment). Specs and schemas are written; the code is not.',
             ],
         },
         {
-            kanji: '無限予測', domain: 'Infinite Foresight', color: 'var(--azure)',
+            kanji: '無限予測', color: 'var(--azure)',
             title: 'Retail Sales Forecasting', real: 'End-to-end demand forecasting + GenAI analyst',
             metric: ['17.8 → 10.1%', 'SMAPE'],
             tags: ['Python', 'LightGBM', 'Streamlit', 'RAG'],
@@ -93,7 +93,7 @@
             ],
         },
         {
-            kanji: '意味虚空', domain: 'Semantic Void', color: 'var(--violet)',
+            kanji: '意味虚空', color: 'var(--violet)',
             title: 'sDAC: Semantic Digital-Analog Converter', real: 'Research reproduction & extension · IEEE Trans. Commun.',
             metric: ['16× – 256×', 'faster codebook lookup'],
             tags: ['PyTorch', 'Deep Learning', 'k-d Trees'],
@@ -107,7 +107,7 @@
             ],
         },
         {
-            kanji: '金庫結界', domain: 'Vault Barrier', color: 'var(--gold)',
+            kanji: '金庫結界', color: 'var(--gold)',
             title: 'StockVault', real: 'Portfolio management database system',
             metric: ['900×', 'read speedup at 1M rows'],
             tags: ['PostgreSQL', 'PL/pgSQL', 'SQL'],
@@ -122,7 +122,7 @@
             ],
         },
         {
-            kanji: '千線競売', domain: 'Thousand-Thread Market', color: 'var(--crimson)',
+            kanji: '千線競売', color: 'var(--crimson)',
             title: 'Real-Time TCP Auction System', real: 'Multi-threaded auction server in pure C',
             metric: ['5 pthreads', '· lock-free global state'],
             tags: ['C', 'POSIX Threads', 'TCP Sockets', 'Linux'],
@@ -137,7 +137,7 @@
             ],
         },
         {
-            kanji: '不断転送', domain: 'Unbroken Stream', color: 'var(--flame)',
+            kanji: '不断転送', color: 'var(--flame)',
             title: 'Fault-Tolerant File Distribution', real: 'Topic-based binary file server in C · POSIX sockets + pthreads · team of 6',
             role: 'My part: 9-byte protocol design · multi-threaded server · multi-node test harness · CI/CD · resume fix · README',
             metric: ['4.2×', 'throughput from 4 parallel streams at 5% faults'],
@@ -158,26 +158,28 @@
         },
     ];
 
-    const PHRASES = {
-        t: ['expanding domain: infinite computation...', 'channelling cursed energy into LightGBM...', 'total concentration: codeforces round...', 'sealing tables in BCNF...', 'spawning pthreads without deadlock...'],
-        p: ['building ML pipelines...', 'forecasting retail demand...', 'solving on Codeforces...', 'designing PostgreSQL schemas...', 'writing concurrent C...'],
-    };
+    const PHRASES = [
+        'building ML pipelines...',
+        'forecasting retail demand...',
+        'designing PostgreSQL schemas...',
+        'writing concurrent C...',
+        'solving on Codeforces...',
+    ];
 
     /* ---------------- RENDER ---------------- */
     const esc = s => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
     $('#techGrid').innerHTML = TECHNIQUES.map(t => `
         <article class="tech-card reveal" style="--c:${t.color}">
-            <span class="tc-kanji">${t.kanji}</span>
+            <span class="tc-kanji" aria-hidden="true">${t.kanji}</span>
             <div class="tc-head">
-                <span class="tc-style" data-t="${esc(t.style)}" data-p="Category">${t.style}</span>
-                <span class="tc-jp kanji-deco">${t.jp}</span>
+                <h3 class="tc-title">${t.title}</h3>
+                <span class="tc-jp kanji-deco" aria-hidden="true">${t.jp}</span>
             </div>
-            <h3 class="tc-title" data-t="${esc(t.title)}" data-p="${esc(t.plain)}">${t.title}</h3>
             ${t.forms ? `<ul class="forms">${t.forms.map(([name, l], i) => `
                 <li class="form-row">
-                    <span class="fr-name"><small data-t="Form ${NUM[i]}" data-p="0${i + 1}">Form ${NUM[i]}</small>${name}</span>
-                    <span class="fr-lvl" data-t="${LVL[l].t}" data-p="${LVL[l].p}">${LVL[l].t}</span>
+                    <span class="fr-name"><small>${String(i + 1).padStart(2, '0')}</small>${name}</span>
+                    <span class="fr-lvl">${LVL[l].t}</span>
                     <span class="form-bar"><i style="--w:${LVL[l].w}"></i></span>
                 </li>`).join('')}</ul>` : ''}
             ${t.chips ? `<div class="chips" style="margin-top:${t.forms ? '1.2rem' : '0'}">${t.chips.map(c => `<span class="chip">${c}</span>`).join('')}</div>` : ''}
@@ -186,14 +188,13 @@
     const ringsSvg = `<svg class="rings" viewBox="0 0 440 440">${[200, 160, 120, 80, 40].map((r, i) => `<circle cx="220" cy="220" r="${r}" stroke-width="${i % 2 ? .6 : 1}" stroke-dasharray="${i % 2 ? '2 8' : '0'}"/>`).join('')}</svg>`;
 
     $('#domainGrid').innerHTML = DOMAINS.map((d, i) => `
-        <article class="domain-card reveal${d.featured ? ' featured' : ''}" style="--c:${d.color}" data-idx="${i}" role="button" tabindex="0" aria-label="Open ${esc(d.title)}">
-            <div class="domain-art">${ringsSvg}</div>
+        <article class="domain-card reveal${d.featured ? ' featured' : ''}" style="--c:${d.color}" data-idx="${i}" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Open case study: ${esc(d.title)}">
+            <div class="domain-art" aria-hidden="true">${ringsSvg}</div>
             <div class="dc-top">
-                <span class="dc-idx" data-t="DOMAIN ${NUM[i]} / 0${DOMAINS.length}" data-p="PROJECT 0${i + 1}">DOMAIN ${NUM[i]} / 0${DOMAINS.length}</span>
-                <span class="dc-open" data-t="expand domain" data-p="case study">expand domain</span>
+                <span class="dc-idx">PROJECT ${String(i + 1).padStart(2, '0')} / ${String(DOMAINS.length).padStart(2, '0')}</span>
+                <span class="dc-open">case study</span>
             </div>
-            <div class="dc-kanji">${d.kanji}</div>
-            <div class="dc-domain kanji-deco">Domain Expansion · ${d.domain}</div>
+            <div class="dc-kanji" aria-hidden="true">${d.kanji}</div>
             <h3 class="dc-title">${d.title}</h3>
             <p class="dc-real">${d.real}</p>
             ${d.role ? `<p class="dc-role mono">${d.role}</p>` : ''}
@@ -225,28 +226,16 @@
         });
     }
 
-    /* ---------------- MODE (sorcerer / plain) ---------------- */
-    let plain = localStorage.getItem('mode') === 'plain';
-    function applyMode() {
-        body.classList.toggle('plain', plain);
-        $$('[data-t]').forEach(el => {
-            el.textContent = el.getAttribute(plain ? 'data-p' : 'data-t');
-        });
-        restartTyping();
-    }
-    $('#modeToggle').addEventListener('click', () => {
-        plain = !plain;
-        localStorage.setItem('mode', plain ? 'plain' : 'sorcerer');
-        if (!plain && !reduceMotion) blackFlash();
-        applyMode();
-    });
+    // The old sorcerer/plain text toggle is gone: the copy is plain English everywhere now,
+    // and the Japanese that remains is decoration only (aria-hidden in the markup).
+    localStorage.removeItem('mode');
 
     /* ---------------- TYPING ---------------- */
     let typeTimer;
     function restartTyping() {
         clearTimeout(typeTimer);
         const el = $('#typeText');
-        const list = PHRASES[plain ? 'p' : 't'];
+        const list = PHRASES;
         let pi = 0, ci = 0, del = false;
         el.textContent = '';
         (function tick() {
@@ -261,33 +250,48 @@
     }
 
     /* ---------------- LOADER ---------------- */
+    // Short on purpose: a visitor's attention budget is ~20s, so the intro must not spend 3s of it.
+    const LOADER_MS = 1200;
     const loader = $('#loader');
     let loaderTimer;
+    const loaderVisible = () => loader.style.display !== 'none' && !loader.classList.contains('done');
     function hideLoader() {
+        if (!loaderVisible()) return;
         clearTimeout(loaderTimer);
         loader.classList.add('done');
-        setTimeout(() => { loader.style.display = 'none'; body.classList.add('ready'); revealHero(); }, 750);
+        setTimeout(() => {
+            loader.style.display = 'none';
+            loader.setAttribute('inert', '');
+            body.classList.add('ready');
+            revealHero();
+        }, 450);
     }
     function playLoader() {
         loader.style.display = '';
+        loader.removeAttribute('inert');
         loader.classList.remove('done');
         // restart CSS animations
         $$('*', loader).forEach(el => { el.style.animation = 'none'; void el.offsetWidth; el.style.animation = ''; });
-        loaderTimer = setTimeout(hideLoader, 3000);
+        loaderTimer = setTimeout(hideLoader, LOADER_MS);
     }
-    $('#loaderSkip').addEventListener('click', hideLoader);
-    document.addEventListener('keydown', e => { if (e.key === 'Enter' && loader.style.display !== 'none' && !loader.classList.contains('done')) hideLoader(); });
+    // Any intent to interact dismisses it — not just the skip button and Enter.
+    $('#loaderSkip').addEventListener('click', e => { e.stopPropagation(); hideLoader(); });
+    loader.addEventListener('click', hideLoader);
+    document.addEventListener('keydown', () => { if (loaderVisible()) hideLoader(); });
+    addEventListener('wheel', () => { if (loaderVisible()) hideLoader(); }, { passive: true });
+    addEventListener('touchstart', () => { if (loaderVisible()) hideLoader(); }, { passive: true });
 
     const noIntro = new URLSearchParams(location.search).has('nointro');
-    if (reduceMotion || plain || noIntro || sessionStorage.getItem('expanded')) {
+    if (reduceMotion || noIntro || sessionStorage.getItem('seenIntro')) {
         loader.style.display = 'none';
+        loader.setAttribute('inert', '');
         requestAnimationFrame(revealHero);
     } else {
-        sessionStorage.setItem('expanded', '1');
+        sessionStorage.setItem('seenIntro', '1');
         playLoader();
     }
     $('#logo').addEventListener('click', e => {
-        if (plain || reduceMotion) return;
+        if (reduceMotion) return;
         e.preventDefault();
         window.scrollTo({ top: 0 });
         playLoader();
@@ -351,8 +355,15 @@
     }, { rootMargin: '-45% 0px -50% 0px' });
     $$('section[id]').forEach(s => secIO.observe(s));
 
-    $('#menuBtn').addEventListener('click', () => body.classList.toggle('menu-open'));
-    navLinks.forEach(a => a.addEventListener('click', () => body.classList.remove('menu-open')));
+    const menuBtn = $('#menuBtn');
+    function setMenu(open) {
+        body.classList.toggle('menu-open', open);
+        menuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        menuBtn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    }
+    menuBtn.addEventListener('click', () => setMenu(!body.classList.contains('menu-open')));
+    navLinks.forEach(a => a.addEventListener('click', () => setMenu(false)));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && body.classList.contains('menu-open')) setMenu(false); });
 
     /* ---------------- CURSOR ---------------- */
     if (finePointer && !reduceMotion) {
@@ -373,6 +384,23 @@
             ring.classList.toggle('hover', !!e.target.closest('a, button, input, textarea, .tech-card, .rank-card'));
         });
     }
+
+    /* ---------------- HERO PORTRAIT ---------------- */
+    // Try the common formats in turn, then fall back to initials rather than a broken-image icon.
+    (() => {
+        const fig = $('#heroPortrait'), img = $('#heroPhoto');
+        if (!fig || !img) return;
+        const CANDIDATES = ['images/pranamya.jpg', 'images/pranamya.jpeg', 'images/pranamya.png', 'images/pranamya.webp'];
+        let i = 0;
+        const next = () => {
+            i += 1;
+            if (i < CANDIDATES.length) img.src = CANDIDATES[i];
+            else fig.classList.add('no-photo');
+        };
+        img.addEventListener('error', next);
+        // Covers the case where the error already fired before this script ran.
+        if (img.complete && img.naturalWidth === 0) next();
+    })();
 
     /* ---------------- ID CARD TILT ---------------- */
     const card = $('#idCard');
@@ -542,16 +570,16 @@
         modal.style.setProperty('--ox', x + 'px');
         modal.style.setProperty('--oy', y + 'px');
         dmContent.innerHTML = `
-            <div class="dm-chant">${plain ? `Project 0${i + 1}` : `領域展開 · Domain Expansion`}</div>
-            ${plain ? '' : `<div class="dm-kanji">${d.kanji}</div>`}
-            <h2 class="dm-title">${plain ? d.title : d.domain}</h2>
-            <p class="dm-real">${plain ? d.real : `${d.title} — ${d.real}`}</p>
+            <div class="dm-chant">Project ${String(i + 1).padStart(2, '0')} / ${String(DOMAINS.length).padStart(2, '0')}</div>
+            <div class="dm-kanji" aria-hidden="true">${d.kanji}</div>
+            <h2 class="dm-title" id="dmTitleLabel">${d.title}</h2>
+            <p class="dm-real">${d.real}</p>
             ${d.role ? `<p class="dm-role mono">${d.role}</p>` : ''}
             ${d.links.length ? `<div class="dm-links">${d.links.map(([l, h]) => `<a href="${h}" target="_blank" rel="noopener">${l} ↗</a>`).join('')}</div>` : `<p class="dm-note mono">${d.note || ''}</p>`}
             <div class="dm-metrics">${d.metrics.map(([b, s]) => `<div class="dm-metric"><b>${b}</b><span>${s}</span></div>`).join('')}</div>
-            <div class="dm-h">${plain ? '// Context' : '// The barrier — why it matters'}</div>
+            <div class="dm-h">// Context</div>
             <p class="dm-story">${d.story}</p>
-            <div class="dm-h">${plain ? '// What I built' : '// Sure-hit effects — what I built'}</div>
+            <div class="dm-h">// What I built</div>
             <ul class="dm-list">${d.points.map(p => `<li>${p}</li>`).join('')}</ul>
             <div class="dm-h">// Stack</div>
             <div class="chips">${d.tags.map(t => `<span class="chip">${t}</span>`).join('')}</div>`;
@@ -560,16 +588,40 @@
             modal.classList.add('open');
             modal.setAttribute('aria-hidden', 'false');
             body.classList.add('modal-open');
+            setBackgroundInert(true);
             $('#dmClose').focus({ preventScroll: true });
         };
-        if (!plain && !reduceMotion) { blackFlash(); setTimeout(go, 140); } else go();
+        if (!reduceMotion) { blackFlash(); setTimeout(go, 140); } else go();
     }
     function closeDomain() {
         modal.classList.remove('open');
         modal.setAttribute('aria-hidden', 'true');
         body.classList.remove('modal-open');
+        setBackgroundInert(false);
         if (lastFocus) lastFocus.focus({ preventScroll: true });
     }
+    // Keep the page behind the dialog out of the tab order and the accessibility tree.
+    const backdropTargets = [$('#nav'), $('main'), $('.footer')].filter(Boolean);
+    function setBackgroundInert(on) {
+        backdropTargets.forEach(el => {
+            if (on) { el.setAttribute('inert', ''); el.setAttribute('aria-hidden', 'true'); }
+            else { el.removeAttribute('inert'); el.removeAttribute('aria-hidden'); }
+        });
+    }
+    // Focus trap: Tab must cycle inside the dialog, not walk into the page behind it.
+    const FOCUSABLE = 'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])';
+    modal.addEventListener('keydown', e => {
+        if (e.key !== 'Tab' || !modal.classList.contains('open')) return;
+        const items = $$(FOCUSABLE, modal).filter(el => el.offsetParent !== null);
+        if (!items.length) return;
+        const first = items[0], last = items[items.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    // Click-outside-to-close. .dm-scroll is inset:0 and sits above .dm-barrier, so it is the
+    // element that actually receives "outside" clicks — only close when the target is itself.
+    const dmScroll = modal.querySelector('.dm-scroll');
+    dmScroll.addEventListener('click', e => { if (e.target === dmScroll) closeDomain(); });
     $('#domainGrid').addEventListener('click', e => {
         const c = e.target.closest('.domain-card');
         if (!c) return;
@@ -601,15 +653,60 @@
         catch { showToast(b.dataset.copy); }
     }));
 
-    /* ---------------- VOW FORM ---------------- */
-    $('#vowForm').addEventListener('submit', e => {
-        e.preventDefault();
-        const f = new FormData(e.target);
+    /* ---------------- CONTACT FORM ---------------- */
+    // Formspree endpoint. If it ever fails, the status line tells the sender to email directly
+    // rather than claiming a success we cannot verify.
+    const FORM_ENDPOINT = 'https://formspree.io/f/xbgogjdw';
+    const EMAIL = 'pranamyasanghvi@gmail.com';
+
+    const form = $('#vowForm');
+    const formNote = $('#formNote');
+    const submitBtn = $('#formSubmit');
+    const submitText = $('#formSubmitText');
+
+    function setNote(msg, kind) {
+        formNote.textContent = msg;
+        formNote.classList.remove('err', 'ok');
+        if (kind) formNote.classList.add(kind);
+    }
+    function mailtoFallback(f) {
         const subject = encodeURIComponent(`Portfolio: message from ${f.get('name')}`);
         const bodyTxt = encodeURIComponent(`${f.get('message')}\n\n— ${f.get('name')} (${f.get('email')})`);
-        if (!plain && !reduceMotion) blackFlash();
-        showToast(plain ? '✓ opening mail client' : '✓ vow sealed — opening mail');
-        setTimeout(() => { location.href = `mailto:pranamyasanghvi@gmail.com?subject=${subject}&body=${bodyTxt}`; }, 450);
+        location.href = `mailto:${EMAIL}?subject=${subject}&body=${bodyTxt}`;
+    }
+
+    if (!FORM_ENDPOINT) setNote(`opens your mail client · or email ${EMAIL} directly`);
+
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
+        if (!form.reportValidity()) return;
+        const f = new FormData(form);
+        if (f.get('_gotcha')) return; // honeypot: bots fill hidden fields
+
+        if (!FORM_ENDPOINT) { mailtoFallback(f); return; }
+
+        submitBtn.disabled = true;
+        submitText.textContent = 'Sending...';
+        setNote('sending...');
+        try {
+            const res = await fetch(FORM_ENDPOINT, {
+                method: 'POST',
+                headers: { Accept: 'application/json' },
+                body: f,
+            });
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            form.reset();
+            submitText.textContent = 'Sent ✓';
+            setNote('got it — I\'ll reply within a couple of days.', 'ok');
+            if (!reduceMotion) blackFlash();
+            showToast('✓ message sent');
+            setTimeout(() => { submitText.textContent = 'Send message'; submitBtn.disabled = false; }, 4000);
+        } catch (err) {
+            // Never claim success we can't verify — offer the path that always works.
+            submitText.textContent = 'Send message';
+            submitBtn.disabled = false;
+            setNote(`couldn't send — please email ${EMAIL} directly.`, 'err');
+        }
     });
 
     /* ---------------- LIVE CODEFORCES ---------------- */
@@ -620,11 +717,7 @@
             const u = j.result[0];
             if (!u.maxRating) return;
             $('#cfRating').textContent = u.maxRating;
-            const hero = $('#cfHero');
-            hero.dataset.count = u.maxRating;
-            if (hero.dataset.done) hero.textContent = u.maxRating.toLocaleString('en-IN');
-            $('#cfRank').textContent = `${u.maxRank || ''} · now ${u.rating}`.trim();
-            $('#cfMeter').style.setProperty('--w', Math.min(100, (u.maxRating / 2400) * 100) + '%');
+            $('#cfRank').textContent = u.rating ? `LogicsLord · now ${u.rating}` : 'LogicsLord';
             const live = $('#cfLive');
             live.textContent = '● live';
             live.classList.add('on');
@@ -633,5 +726,5 @@
 
     /* ---------------- INIT ---------------- */
     applyTheme();
-    applyMode();
+    restartTyping();
 })();
