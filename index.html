@@ -142,8 +142,8 @@
                 <div class="stat-lbl">catalog p95 · 65× under k6 load</div>
             </div>
             <div class="stat">
-                <div class="stat-val stat-text">17.8 → 10.1%</div>
-                <div class="stat-lbl">SMAPE · 3.4M-row forecast</div>
+                <div class="stat-val" data-count="5.42" data-dec="2" data-suffix="%">5.42%</div>
+                <div class="stat-lbl">MAPE · bottom-up LightGBM (−49% vs SARIMA)</div>
             </div>
             <div class="stat">
                 <div class="stat-val" data-count="4.2" data-dec="1" data-suffix="×">4.2×</div>
@@ -252,7 +252,7 @@
         <h2 class="sec-title">Technical Arsenal.</h2>
         <span class="sec-kanji kanji-deco" aria-hidden="true">技術</span>
     </div>
-    <p class="sec-intro reveal">The stack I actually use, with an honest read on depth.</p>
+    <p class="sec-intro reveal">The technologies, frameworks, and technical foundations I use across systems, data, and machine learning.</p>
 
     <div class="tech-grid" id="techGrid"><!-- rendered by JS --></div>
 </section>
@@ -273,7 +273,7 @@
             <li><b>MySlate</b> — full-stack Spring Boot / React learning platform, 51 endpoints over 9 tables;
                 diagnosed a 5N+1 query pattern and cut catalog p95 from 7.7s to 118ms (65×) with batched JPQL
                 and a Caffeine cache; 566 tests at 94% instruction coverage.</li>
-            <li><b>Retail Sales Forecasting</b> — demand forecasting + GenAI analyst, SMAPE 17.8% → 10.1% on 3.4M rows.
+            <li><b>Retail Sales Forecasting</b> — demand forecasting + GenAI analyst; bottom-up LightGBM achieved 5.42% MAPE / 4.81% SMAPE on 3.4M rows (−49.3% MAE vs SARIMA baseline).
                 <a href="https://github.com/Elite407/sales-forecasting">Repo</a> ·
                 <a href="https://sales-forecasting-v001.streamlit.app">Live demo</a></li>
             <li><b>Fault-Tolerant File Distribution</b> — topic-based binary file server in C with session resume under fault injection.

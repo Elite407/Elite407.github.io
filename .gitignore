@@ -30,6 +30,7 @@ FinalReport*
 *.gif
 Screenshot*
 implementation_plan.md
+*_TODO.md
 
 # Deployments & temp
 .vercel

@@ -11,48 +11,39 @@
     const body = document.body;
 
     /* ---------------- DATA ---------------- */
-    // lvl: 3 = Expert, 2 = Advanced, 1 = Intermediate
-    const LVL = {
-        3: { w: '94%', t: 'Expert' },
-        2: { w: '74%', t: 'Advanced' },
-        1: { w: '52%', t: 'Intermediate' },
-    };
-
     const TECHNIQUES = [
         {
             jp: '言語', kanji: '語', color: 'var(--azure)',
             title: 'Languages',
-            forms: [['Python', 3], ['SQL', 3], ['Java', 2], ['C++', 2], ['C', 1]],
-            chips: ['MATLAB'],
+            chips: ['Python', 'SQL', 'Java', 'C++', 'C', 'MATLAB', 'Bash / Shell'],
         },
         {
             jp: 'データ分析', kanji: '析', color: 'var(--wind)',
             title: 'Data Science',
-            forms: [['Pandas', 3], ['NumPy', 3], ['Scikit-learn', 2], ['Matplotlib', 2], ['Seaborn', 2]],
-            chips: ['SciPy', 'SHAP', 'Jupyter'],
+            chips: ['Pandas', 'NumPy', 'Scikit-learn', 'Matplotlib', 'Seaborn', 'SciPy', 'SHAP', 'Statsmodels', 'Jupyter'],
         },
         {
             jp: '機械学習', kanji: '学', color: 'var(--flame)',
             title: 'AI / ML',
-            forms: [['PyTorch', 2], ['LightGBM', 2], ['TensorFlow', 2], ['Keras', 2]],
-            chips: ['RAG', 'GenAI', 'LLM function-calling'],
+            chips: ['PyTorch', 'LightGBM', 'TensorFlow', 'Keras', 'RAG Architecture', 'GenAI & LLMs', 'Function Calling'],
         },
         {
             jp: '開発環境', kanji: '具', color: 'var(--gold)',
-            title: 'Developer Tools',
-            forms: [['Git', 3], ['PostgreSQL', 2], ['Streamlit', 2]],
-            chips: ['Spring Boot', 'Hibernate · JPQL', 'Caffeine', 'k6', 'JWT · OAuth2', 'REST · Swagger', 'Maven', 'Postman', 'Docker', 'GitHub Actions', 'JUnit · JaCoCo', 'Linux Shell', 'pgAdmin', 'POSIX threads', 'POSIX sockets'],
+            title: 'Backend & Systems',
+            groups: [
+                { name: 'Architecture & Storage', chips: ['Spring Boot', 'Hibernate · JPQL', 'Caffeine Cache', 'PostgreSQL', 'POSIX Threads', 'POSIX Sockets', 'REST APIs', 'JWT · OAuth2'] },
+                { name: 'DevOps & Tooling', chips: ['Git', 'Docker', 'GitHub Actions CI/CD', 'k6 Load Testing', 'JUnit · JaCoCo', 'Linux Shell', 'Streamlit', 'Postman', 'Maven', 'pgAdmin'] }
+            ]
         },
         {
             jp: '履修', kanji: '修', color: 'var(--moon)',
             title: 'Coursework',
-            chips: ['Probability & Statistics', 'Design & Analysis of Algorithms', 'DBMS', 'Operating Systems', 'Object Oriented Programming', 'Linear Algebra'],
+            chips: ['Design & Analysis of Algorithms', 'Database Management Systems', 'Operating Systems', 'Object Oriented Programming', 'Linear Algebra', 'Probability & Statistics'],
         },
         {
             jp: '問題解決', kanji: '競', color: 'var(--crimson)',
             title: 'Problem Solving',
-            forms: [['Codeforces · 1376', 2], ['LeetCode · 1719', 2]],
-            chips: ['DSA', 'Greedy', 'Graphs', 'DP'],
+            chips: ['Codeforces (1376)', 'LeetCode (1719)', 'Data Structures & Algorithms', 'Dynamic Programming', 'Graph Algorithms', 'Greedy Approaches'],
         },
     ];
 
@@ -70,7 +61,7 @@
                 '<b>Diagnosed a 5N+1 query pattern</b> as the cause of 6–13 s catalog latency under k6 load. Each catalog request was fanning out into five additional queries per course against a remote database, so the cost was dominated by round trips rather than by the queries themselves.',
                 'Fixed it with <b>3 batched JPQL queries</b> plus a <b>Caffeine cache</b> with explicit invalidation and stampede protection. The cache deliberately holds only role-agnostic data — <b>per-user access control stays out of the shared cache</b>, so one user\'s permissions can never be served to another.',
                 'Result: catalog <b>p95 fell from 7.7 s to 118 ms (65×)</b> and throughput rose from <b>3 to 290 req/s</b>. At 100 concurrent virtual users, k6 p95 went from <b>13 s to 6.5 ms</b>. Measured with the same k6 scripts before and after, on the same remote Neon instance.',
-                'Built the backend test suite to <b>566 tests across 33 test classes</b> with JUnit 5, Mockito and MockMvc — <b>94% instruction and 88% branch coverage</b>, all 13 controllers covered, services at 97%, with before/after JaCoCo reports committed. Coverage is the side effect; the point was being able to change the query layer above without breaking behaviour.',
+                'Built the backend test suite to <b>566 tests across 35 test classes</b> with JUnit 5, Mockito and MockMvc — <b>94% instruction and 88% branch coverage</b>, all 13 controllers covered, services at 97%, with before/after JaCoCo reports committed, providing the regression safety net required to refactor the query and caching layers safely without breaking behaviour or access controls.',
                 'Set up the delivery pipeline: <b>path-filtered CI</b> with a Postgres service container so only affected modules rebuild, and a <b>CD workflow publishing containers to GHCR</b>.',
                 'Added a <b>feature-flag mechanism</b> for UI that has no backend yet. Mock-data screens are tagged <b>@preview-only</b> with the missing endpoint, shown in local dev and hidden in production builds, so a single grep lists everything left to wire up.',
                 'Wrote the supporting documentation: database architecture, functional and non-functional requirements, epics, user stories and landing-page prototypes.',
@@ -80,16 +71,48 @@
         {
             kanji: '無限予測', color: 'var(--azure)',
             title: 'Retail Sales Forecasting', real: 'End-to-end demand forecasting + GenAI analyst',
-            metric: ['17.8 → 10.1%', 'SMAPE'],
-            tags: ['Python', 'LightGBM', 'Streamlit', 'RAG'],
+            metric: ['5.42% MAPE', 'bottom-up national aggregate'],
+            tags: ['Python', 'LightGBM', 'Streamlit', 'SHAP', 'Google Gemini', 'RAG', 'Statsmodels'],
             links: [['Repo', 'https://github.com/Elite407/sales-forecasting'], ['Live demo', 'https://sales-forecasting-v001.streamlit.app']],
-            metrics: [['3.4M', 'rows of retail data'], ['54 × 33', 'stores × families'], ['10.1%', 'final SMAPE'], ['5', 'grounded LLM tools']],
-            story: 'Retail demand forecasting is a billion-dollar problem — overstocking wastes inventory; understocking loses sales. I tackled a 3.4 million-row dataset spanning 54 stores and 33 product families, full of messy real-world signal: missing values, holiday effects, oil-price correlations and earthquake disruptions. The challenge wasn\'t just building models — it was making them explainable to non-technical stakeholders through a dashboard anyone could query in plain English.',
+            metrics: [['5.42%', 'national MAPE (4.81% SMAPE)'], ['43,947', 'national MAE (−49.3% vs SARIMA)'], ['1,782', 'store × family series'], ['7', 'Streamlit dashboard tabs'], ['5', 'grounded LLM tools']],
+            story: 'Retail demand forecasting is a high-stakes operational problem — overstocking wastes capital; stockouts forfeit revenue. I analyzed a 3.4 million-row dataset spanning 54 stores and 33 product families from Ecuadorian retailer Corporación Favorita. The core engineering insight was resolving the granularity mismatch: classical statistical models excel at national aggregates but fail operational sku-level demands, whereas bottom-up summation of granular LightGBM predictions cuts aggregate baseline error in half while remaining fully explainable through SHAP and an autonomous GenAI copilot.',
             points: [
-                'Cleaned, preprocessed and ran <b>exploratory data analysis</b> on the 3.4M-row dataset — handled missing values, outlier detection, and uncovered seasonal trends that guided feature engineering.',
-                'Benchmarked <b>ARIMA, SARIMA, Prophet and LightGBM</b> via walk-forward cross-validation, cutting <b>SMAPE from 17.8% to 10.1%</b>; used <b>SHAP</b> to explain per-anomaly demand drivers at the row level.',
-                'Built and deployed a <b>6-tab Streamlit dashboard</b> for store-level forecasting, model comparison and anomaly diagnostics.',
-                'Shipped a GenAI analyst tab with <b>LLM function-calling (5 grounded tools)</b> and a <b>TF-IDF RAG pipeline</b> for natural-language queries over forecasts, anomalies and metrics.',
+                'Cleaned, preprocessed and ran <b>exploratory data analysis</b> on the 3.4M-row dataset: isolated a <b>+14.8% biweekly payday lift</b>, proved resilient staple sales during the 2014–15 crude oil collapse, and captured emergency demand spikes following the April 2016 7.8M earthquake.',
+                'Benchmarked <b>ARIMA, SARIMA, Prophet and LightGBM</b>; resolved the granularity mismatch by aggregating 1,782 store×family LightGBM series bottom-up, achieving <b>5.42% MAPE / 4.81% SMAPE (43,947 MAE)</b> on the 16-day holdout — cutting SARIMA baseline error (86,618 MAE) by <b>49.3%</b>.',
+                'Applied <b>SHAP TreeExplainer</b> across 1,782 series to explain per-anomaly demand drivers at the row level; identified 7-day lag, promotions, and 14-day rolling mean as dominant global drivers, and built local waterfall decompositions for anomalous spikes.',
+                'Built and deployed an enterprise <b>7-tab Streamlit dashboard</b> for store-level forecasting, multi-category macro trends, classical model diagnostics, and SHAP explainability.',
+                'Shipped an autonomous GenAI analyst tab with <b>LLM function-calling (5 grounded tools)</b> and a <b>TF-IDF RAG pipeline</b> for natural-language queries over forecasts, anomalies and model metrics.',
+                '<b>Documented limitations:</b> Evaluated on a single 16-day holdout; row-level SMAPE is 70.33% on sparse zero-heavy series (national 4.81% SMAPE benefits from residual cancellation under summation); earthquake shock captured from training data rather than predicted a priori.',
+            ],
+            shots: [
+                {
+                    src: 'images/projects/dashboard_overview.png',
+                    alt: 'Streamlit dashboard executive overview displaying KPI telemetry, national daily trends, and historical timeline of macroeconomic shocks',
+                    caption: 'Executive Overview: KPI telemetry, national daily trends, and historical timeline of macroeconomic shocks.',
+                    width: 1920,
+                    height: 1080
+                },
+                {
+                    src: 'images/projects/dashboard_model_comparison.png',
+                    alt: 'Master benchmark matrix comparing LightGBM, SARIMA, Prophet, and ARIMA across holdout MAE and MAPE metrics',
+                    caption: 'Model Comparison: Benchmark matrix proving bottom-up LightGBM (43,947 MAE) achieves 49.3% error reduction over SARIMA.',
+                    width: 1920,
+                    height: 1080
+                },
+                {
+                    src: 'images/projects/dashboard_shap_explainer.png',
+                    alt: 'SHAP Explainable AI tab with global TreeExplainer feature importance beeswarm and local anomaly waterfall breakdown',
+                    caption: 'SHAP Explainability: Side-by-side global feature ranking (lags, promotions) and local causal waterfall attribution.',
+                    width: 1920,
+                    height: 1080
+                },
+                {
+                    src: 'images/projects/dashboard_genai_analyst.png',
+                    alt: 'Autonomous GenAI decision copilot interface with Gemini function-calling and 5 grounded tools',
+                    caption: 'GenAI Analyst: Conversational decision copilot using 5 grounded tools to query forecasts and explain anomalies.',
+                    width: 1920,
+                    height: 1080
+                }
             ],
         },
         {
@@ -176,13 +199,12 @@
                 <h3 class="tc-title">${t.title}</h3>
                 <span class="tc-jp kanji-deco" aria-hidden="true">${t.jp}</span>
             </div>
-            ${t.forms ? `<ul class="forms">${t.forms.map(([name, l], i) => `
-                <li class="form-row">
-                    <span class="fr-name"><small>${String(i + 1).padStart(2, '0')}</small>${name}</span>
-                    <span class="fr-lvl">${LVL[l].t}</span>
-                    <span class="form-bar"><i style="--w:${LVL[l].w}"></i></span>
-                </li>`).join('')}</ul>` : ''}
-            ${t.chips ? `<div class="chips" style="margin-top:${t.forms ? '1.2rem' : '0'}">${t.chips.map(c => `<span class="chip">${c}</span>`).join('')}</div>` : ''}
+            ${t.groups ? t.groups.map(g => `
+                <div class="tech-group">
+                    ${g.name ? `<div class="tech-group-title mono">${g.name}</div>` : ''}
+                    <div class="chips">${g.chips.map(c => `<span class="chip">${c}</span>`).join('')}</div>
+                </div>`).join('') : ''}
+            ${t.chips ? `<div class="chips">${t.chips.map(c => `<span class="chip">${c}</span>`).join('')}</div>` : ''}
         </article>`).join('');
 
     const ringsSvg = `<svg class="rings" viewBox="0 0 440 440">${[200, 160, 120, 80, 40].map((r, i) => `<circle cx="220" cy="220" r="${r}" stroke-width="${i % 2 ? .6 : 1}" stroke-dasharray="${i % 2 ? '2 8' : '0'}"/>`).join('')}</svg>`;
@@ -581,6 +603,16 @@
             <p class="dm-story">${d.story}</p>
             <div class="dm-h">// What I built</div>
             <ul class="dm-list">${d.points.map(p => `<li>${p}</li>`).join('')}</ul>
+            ${d.shots && d.shots.length ? `
+            <div class="dm-h">// Visual Proof</div>
+            <div class="dm-shots">
+                ${d.shots.map(s => `
+                    <figure class="dm-shot">
+                        <img src="${s.src}" alt="${esc(s.alt)}" width="${s.width || 1920}" height="${s.height || 1080}" loading="lazy" decoding="async">
+                        ${s.caption ? `<figcaption class="mono">${esc(s.caption)}</figcaption>` : ''}
+                    </figure>
+                `).join('')}
+            </div>` : ''}
             <div class="dm-h">// Stack</div>
             <div class="chips">${d.tags.map(t => `<span class="chip">${t}</span>`).join('')}</div>`;
         modal.querySelector('.dm-scroll').scrollTop = 0;
