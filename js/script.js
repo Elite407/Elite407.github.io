@@ -163,20 +163,55 @@
             kanji: '不断転送', color: 'var(--flame)',
             title: 'Fault-Tolerant File Distribution', real: 'Topic-based binary file server in C · POSIX sockets + pthreads · team of 6',
             role: 'My part: 9-byte protocol design · multi-threaded server · multi-node test harness · CI/CD · resume fix · README',
-            metric: ['4.2×', 'throughput from 4 parallel streams at 5% faults'],
+            metric: ['26.8×', 'session-resume vs stateless at 2% faults'],
             tags: ['C', 'POSIX Sockets', 'POSIX Threads', 'Protocol Design', 'GitHub Actions'],
-            links: [['Repo', 'https://github.com/Elite407/Fault-Tolerant-Topic-based-File-Distribution-Service']],
-            metrics: [['9 B', 'binary frame header'], ['12', 'protocol message types'], ['500+', 'stateless restarts at 5% faults, no data delivered'], ['13%', 'redundant bytes with resume at 5% faults'], ['4.2×', '4 parallel streams vs 1, at 5% faults']],
-            story: 'TCP guarantees delivery inside one connection and nothing once that connection dies. This IT305 Computer Networks project builds the missing layer: a custom application protocol in C for distributing topic-organised binary files, with synthetic fault injection that drops connections mid-transfer. The point is the comparison. A stateless server and client that wipe and restart from byte zero waste more bandwidth every time a fault hits. A server with session state and a client that checkpoints to disk resumes at the exact byte. A parallel variant then splits files across several connections so one failure only stalls one stream. Built by a merged group of six (Groups 100 and 113).',
+            links: [['Repo', 'https://github.com/Elite407/resilient-stream']],
+            metrics: [
+                ['26.8×', 'session-resume vs stateless at 2% faults'],
+                ['0.05 → 1.34 MB/s', 'stateless vs resume at 2% faults'],
+                ['4.86×', 'concurrency speedup (4 parallel streams vs 1)'],
+                ['63.5 → 301.6 MB/s', 'fault-free baseline throughput'],
+                ['9 B', 'binary frame header'],
+                ['12', 'protocol message types']
+            ],
+            story: 'TCP guarantees in-order byte delivery within an active connection, but offers zero recovery once that connection drops mid-transfer. This IT305 Computer Networks project designs the resilience layer above TCP: a custom framed application protocol in C for distributing topic-organized binary files under synthetic per-chunk fault injection. The evaluation compares recovery paradigms directly. A stateless implementation wipes the destination directory and restarts from byte zero on every disconnect, causing total throughput collapse as faults scale. A stateful session server paired with an fsync-checkpointing client resumes transfers at the exact byte offset via a dedicated reconnect handshake. An enhanced variant partitions files across parallel worker streams with modulo hashing. Built as a team-of-six collaboration (merged Groups 100 and 113).',
             points: [
-                'Architected the <b>9-byte framed binary protocol</b> and the <b>multi-threaded server engine</b>, with the main thread as a pure listener that hands each client to a <b>detached pthread</b>, and built the <b>multi-node test harness</b> used to collect the results (as credited in the group report).',
-                'Found and fixed a <b>non-deterministic file-traversal bug that affected checkpoint resume</b>. The server enumerated files with unordered <b>readdir()</b>, so I switched it to a sorted <b>scandir()</b> for stable file indices across reconnects, added <b>bounds checks</b> on topic and payload lengths, and rolled the fix out to the other servers.',
-                'Set up <b>CI/CD with GitHub Actions</b>: it builds all four modules and runs the integration harness, and the runs on <b>main are green</b>. Also wrote the contributing guide and the initial project structure.',
-                'Extended the <b>benchmark runner</b> to sweep all ten topic datasets across client counts and fault probabilities.',
-                'Wrote the <b>650-line README</b>: wire-protocol specification, architecture diagrams, message layouts, handshake and recovery flows, and a full run guide.',
-                '<b>Team-built design.</b> A <b>9-byte framed binary protocol</b> (type, transaction ID, length) with <b>send_all/recv_all</b> to survive partial I/O and EINTR and <b>MSG_NOSIGNAL</b> against SIGPIPE. Case 1 injects faults per 8 KB chunk and restarts from scratch. Case 2 keeps a <b>mutex-guarded session table</b> with 64-bit session IDs, a client checkpoint that advances only after a successful <b>fwrite</b>, and a <b>RECONNECT_REQ</b> handshake that resumes with <b>fseek</b>. The Enhanced variant gives each of N workers the files where <b>index mod N</b> matches its ID.',
-                '<b>Measured results</b> from a multi-node testbed (figures taken from the terminal screenshots in the group report). At a <b>5% per-chunk fault rate</b> the stateless server and client never finished, with <b>500+ wipe-and-restart cycles</b> and no useful data delivered. Session resumption completed the transfer with about <b>13% redundant bytes</b>, and four parallel connections raised throughput from <b>0.38 to 1.60 MB/s (about 4.2×)</b>. These are small lab runs, not a rigorous benchmark.',
-                'Why restarting fails: with per-chunk fault probability P, a topic of n chunks finishes without a restart with probability <b>(1 − P)<sup>n</sup></b>. At 5% faults and a 3,110-chunk topic that is about <b>10<sup>−70</sup></b>, which is why session resumption matters.',
+                '<b>The readdir() non-deterministic resume bug:</b> During checkpoint recovery testing, clients resuming after dropped connections occasionally received corrupted or mismatched files. Root cause: the server traversed topic directories using unordered <code>readdir()</code>, whose return order is filesystem-dependent and varied across reconnects, shifting file indices. I resolved this by refactoring enumeration to sorted <code>scandir()</code> for deterministic indexing across restarts, added strict bounds checks on topic and payload headers, and backported the patch across all server variants.',
+                '<b>Wire protocol & server engine:</b> Architected the <b>9-byte binary framed protocol</b> (1-byte type, 4-byte transaction ID, 4-byte payload length) in <code>protocol.h</code>, with atomic <code>send_all</code>/<code>recv_all</code> loops to survive partial I/O and <code>EINTR</code>, and <code>MSG_NOSIGNAL</code> to prevent process death on <code>SIGPIPE</code>. Designed the multi-threaded listener loop delegating clients to detached POSIX threads.',
+                '<b>Stateful resumption & parallel streaming:</b> Case 1 simulates stateless drops with recursive directory wipes. Case 2 maintains an in-memory <b>mutex-guarded session table</b> (64-bit session ID, file cursor, topic name); the client advances checkpoints only after disk <code>fwrite</code>, initiating a <code>RECONNECT_REQ</code> handshake that resumes via server <code>fseek</code>. Case 2 Enhanced distributes files across N parallel TCP connections via <code>index mod N</code> partitioning.',
+                '<b>Empirical benchmark results (committed CSV data):</b> Under 2% per-chunk fault injection (<code>Part2_throughput.csv</code>), the stateless pipeline collapses to <b>0.05 MB/s</b>, while stateful session resumption sustains <b>1.34 MB/s (a 26.8× throughput advantage)</b>, widening from 3.9× at 1% faults. In the parallel streaming suite (<code>Part2_Enhanced_throughput.csv</code>), scaling from 1 to 4 connections increased throughput from <b>0.42 to 2.04 MB/s (4.86× speedup)</b>. In fault-free baseline testing, session resumption delivers <b>301.6 MB/s</b> vs stateless 63.5 MB/s.',
+                '<b>Saturation analysis & limitations:</b> In multi-client scaling (<code>Part1_throughput.csv</code>), throughput doubles near-linearly from 1 to 2 clients (<b>52.61 → 102.65 MB/s</b>), but plateaus at 4 and 8 clients (<b>102.26 → 112.16 MB/s</b>), indicating saturation at the link or disk I/O rather than the thread pool. <em>These are small lab runs, not a rigorous benchmark:</em> data reflects single runs per configuration without variance error bars, and the stateless baseline was permitted to spin on reconnects rather than backing off.',
+                '<b>CI/CD & documentation:</b> Configured GitHub Actions CI workflows (<code>build.yml</code>, <code>ci.yml</code>) compiling all four modules with <code>-Wall -Wextra</code> and running the end-to-end integration test suite (15/15 checks green on <code>main</code>). Authored the comprehensive <b>880+ line wire-protocol specification and run guide</b> in the project README.',
+            ],
+            shots: [
+                {
+                    src: 'images/projects/ftfd_part2_cases_throughput.png',
+                    alt: 'Benchmark plot comparing Case 1 stateless throughput collapse vs Case 2 session resumption under 0% to 2% fault injection',
+                    caption: 'Case 1 vs Case 2 Throughput: Stateless collapses from 63.5 MB/s to 0.05 MB/s at 2% faults, while session resumption sustains 1.34 MB/s (26.8× advantage).',
+                    width: 2820,
+                    height: 1619
+                },
+                {
+                    src: 'images/projects/ftfd_part2_enhanced_throughput.png',
+                    alt: 'Benchmark plot showing throughput scaling across 1, 2, 4, and 8 parallel TCP worker connections',
+                    caption: 'Parallel Streaming Concurrency: 4 worker connections achieve 2.04 MB/s vs 0.42 MB/s single-stream (4.86× speedup) using modulo file partitioning.',
+                    width: 2655,
+                    height: 1619
+                },
+                {
+                    src: 'images/projects/ftfd_terminal_session_resume.png',
+                    alt: 'Dual-pane terminal capture of Part 2 Case 2 server and client performing handshake and byte-offset resumption',
+                    caption: 'Session Resumption: Client reconnects with session ID and resumes exactly from byte offset with zero redundant chunk retransmissions.',
+                    width: 1520,
+                    height: 860
+                },
+                {
+                    src: 'images/projects/ftfd_terminal_case1_failover.png',
+                    alt: 'Dual-pane terminal capture of Part 2 Case 1 stateless disconnect and directory wipe',
+                    caption: 'Stateless Failover: Connection drop detected, client unlinks partial directory, and transfer restarts from byte zero.',
+                    width: 1520,
+                    height: 860
+                }
             ],
         },
     ];
